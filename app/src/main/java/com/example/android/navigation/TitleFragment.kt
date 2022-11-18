@@ -34,25 +34,29 @@ class TitleFragment : Fragment() {
 //        }
 
         //optimization 2: Navigation can create the listener for you!
-        binding.playButton.setOnClickListener(
-            Navigation.createNavigateOnClickListener(R.id.action_titleFragment_to_gameFragment))
+        // binding.playButton.setOnClickListener(
+        //      Navigation.createNavigateOnClickListener(R.id.action_titleFragment_to_gameFragment))
+
+        //optimization 3: Using anonymous function again and directions class
+        binding.playButton.setOnClickListener { v: View ->
+            v.findNavController()
+                .navigate(TitleFragmentDirections.actionTitleFragmentToGameFragment())
+        }
 
         // First, we need to tell android that there is a menu associated with TitleFragment.
         setHasOptionsMenu(true);
-
 
         return binding.root // the root of the layout we just inflated
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater?.inflate(R.menu.overflow_menu, menu);
+        inflater.inflate(R.menu.overflow_menu, menu);
     }
 
     // When menu is clicked...
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return NavigationUI.onNavDestinationSelected(item!!,
-            view!!.findNavController())
+        return NavigationUI.onNavDestinationSelected(item, requireView().findNavController())
                 || super.onOptionsItemSelected(item)
     }
 }
